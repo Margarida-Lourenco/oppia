@@ -1,0 +1,95 @@
+<div class="modal-header">
+  <h2 class="modal-title">Add topics to classroom</h2>
+  <button type="button" class="close" (click)="close()">
+    <span>&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <p *ngIf="!topicForm" class="loading-message">
+  Loading unused topics <loading-dots></loading-dots>
+  </p>
+  <form *ngIf="topicForm" [formGroup]="topicForm">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th class="checkbox-column checkbox-cell">
+            <input type="checkbox"
+                   class="form-check-input"
+                   id="selectAll"
+                   [checked]="toggleAllTopics()"
+                   (change)="toggleAllTopics($event)">
+          </th>
+          <th class="center-text">Topic Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let topic of topicBackendDictList">
+          <td class="checkbox-cell">
+            <input type="checkbox"
+                   class="form-check-input"
+                   [id]="topic.id"
+                   [formControlName]="topic.id">
+          </td>
+          <td class="center-text">{{ topic.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="close()">
+    Cancel
+  </button>
+  <button type="button" class="btn add-topics-button" (click)="addTopics()">
+    Add Topics
+  </button>
+</div>
+
+<style>
+  .loading-message {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .modal-body {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .form-check-label {
+    margin-left: 5px;
+  }
+
+  .checkbox-column {
+    width: 50px;
+  }
+
+  .add-topics-button {
+    background-color: #00645c;
+    border-color: #004d4a;
+    color: #fff;
+  }
+
+  .btn-add-topics-button:hover {
+    background-color: #004d4a;
+    border-color: #003d3a;
+  }
+
+  .center-text {
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .checkbox-cell {
+    padding: 0 !important;
+    text-align: center;
+    vertical-align: middle !important;
+  }
+
+  .checkbox-cell .form-check-input {
+    display: inline-block;
+    margin: 0 !important;
+    position: static !important;
+  }
+</style>

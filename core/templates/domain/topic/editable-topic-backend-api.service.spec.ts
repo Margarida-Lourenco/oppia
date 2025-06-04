@@ -137,6 +137,48 @@ describe('Editable topic backend API service', () => {
     expect(failHandler).not.toHaveBeenCalled();
   }));
 
+  it('should successfully fetch unused topics', fakeAsync(() => {
+    let successHandler = jasmine.createSpy('success');
+    let failHandler = jasmine.createSpy('fail');
+
+    const unusedTopics = [
+      {
+        id: 'topic1',
+        name: 'Topic 1',
+        description: 'Description 1',
+        version: 1,
+        canonical_story_references: [],
+        additional_story_references: [],
+        uncategorized_skill_ids: [],
+        subtopics: [],
+        language_code: 'en',
+      },
+      {
+        id: 'topic2',
+        name: 'Topic 2',
+        description: 'Description 2',
+        version: 1,
+        canonical_story_references: [],
+        additional_story_references: [],
+        uncategorized_skill_ids: [],
+        subtopics: [],
+        language_code: 'en',
+      },
+    ];
+
+    editableTopicBackendApiService
+      .getUnusedTopicsAsync()
+      .then(successHandler, failHandler);
+    let req = httpTestingController.expectOne('/unused_topics');
+    expect(req.request.method).toEqual('GET');
+    req.flush({unused_topics: unusedTopics});
+
+    flushMicrotasks();
+
+    expect(successHandler).toHaveBeenCalledWith(unusedTopics);
+    expect(failHandler).not.toHaveBeenCalled();
+  }));
+
   it('should use the rejection handler if the backend request failed', fakeAsync(() => {
     let successHandler = jasmine.createSpy('success');
     let failHandler = jasmine.createSpy('fail');

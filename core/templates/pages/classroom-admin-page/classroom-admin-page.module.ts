@@ -36,6 +36,7 @@ import {CommonModule} from '@angular/common';
 import {ClassroomAdminPageRootComponent} from './classroom-admin-page-root.component';
 import {ClassroomAdminAuthGuard} from './classroom-admin-auth.guard';
 import {UpdateClassroomsOrderModalComponent} from './modals/update-classrooms-order-modal.component';
+import {AddTopicToClassroomModalComponent} from './modals/add-topic-to-classroom-modal.component';
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import {UpdateClassroomsOrderModalComponent} from './modals/update-classrooms-or
     DeleteTopicFromClassroomModalComponent,
     TopicsDependencyGraphModalComponent,
     UpdateClassroomsOrderModalComponent,
+    AddTopicToClassroomModalComponent,
   ],
   entryComponents: [
     ClassroomAdminNavbarComponent,
@@ -74,6 +76,7 @@ import {UpdateClassroomsOrderModalComponent} from './modals/update-classrooms-or
     DeleteTopicFromClassroomModalComponent,
     TopicsDependencyGraphModalComponent,
     UpdateClassroomsOrderModalComponent,
+    AddTopicToClassroomModalComponent,
   ],
 })
 export class ClassroomAdminPageModule {}

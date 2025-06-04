@@ -287,40 +287,11 @@
             </div>
 
             <div *ngIf="classroomEditorMode">
-              <div class="new-topic-input-container" *ngIf="newTopicCanBeAdded">
-                <div class="topic-selector-container">
-                  <mat-form-field appearance="fill" class="topics-selector-form-field e2e-test-classroom-topics-modal">
-                    <mat-label for="explorationCategory" class="d-block">Select a topic</mat-label>
-                    <mat-select (selectionChange)="onNewTopicInputModelChange($event.value)" class="e2e-test-classroom-category-dropdown">
-                      <mat-option class="e2e-test-classroom-new-topic-add">
-                        <ngx-mat-select-search
-                          ngModel
-                          (ngModelChange)="filterTopicsByName($event)"
-                          placeholderLabel="Search topic name here...">
-                        </ngx-mat-select-search>
-                      </mat-option>
-                      <mat-option *ngFor="let option of filteredTopicsToClassroomRelation"
-                                  class="e2e-test-classroom-topic-selector-choice"
-                                  [value]="option.topic_id">
-                          {{ option.topic_name }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <button (click)="removeNewTopicInputField()"
-                        class="btn btn-secondary cancel-btn">
-                    Cancel
-                </button>
-              </div>
-
-              <button (click)="showNewTopicInputField()"
+              <button (click)="openAddTopicModal()"
                       *ngIf="!newTopicCanBeAdded"
                       class="btn btn-secondary add-new-topic e2e-test-add-topic-to-classroom-button">
                 Add Topic
               </button>
-              <p *ngIf="!topicWithGivenIdExists" class="oppia-warning-text" >
-                Topic with given ID does not exist.
-              </p>
             </div>
           </div>
 

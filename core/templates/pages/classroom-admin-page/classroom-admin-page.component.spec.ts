@@ -684,6 +684,31 @@ describe('Classroom Admin Page component ', () => {
     expect(component.classroomCount).toEqual(2);
   }));
 
+  it('should open the Add Topic modal and handle selected topics', fakeAsync(() => {
+    const mockModalRef: Partial<NgbModalRef> = {
+      componentInstance: {
+        topicsList: ['topic1', 'topic2', 'topic3'],
+      },
+      result: Promise.resolve(['selectedTopic1', 'selectedTopic2']),
+    };
+
+    spyOn(ngbModal, 'open').and.returnValue(mockModalRef as NgbModalRef);
+    spyOn(component, 'addTopicId');
+
+    component.openAddTopicModal();
+    tick();
+
+    expect(ngbModal.open).toHaveBeenCalled();
+    expect(mockModalRef.componentInstance.topicsList).toEqual([
+      'topic1',
+      'topic2',
+      'topic3',
+    ]);
+    expect(component.addTopicId).toHaveBeenCalledWith('selectedTopic1');
+    expect(component.addTopicId).toHaveBeenCalledWith('selectedTopic2');
+    expect(component.addTopicId).toHaveBeenCalledTimes(2);
+  }));
+
   it('should be able to cancel modal for not deleting the classroom', fakeAsync(() => {
     component.classroomIdToClassroomNameIndex = [
       {

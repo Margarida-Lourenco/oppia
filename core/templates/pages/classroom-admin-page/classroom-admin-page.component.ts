@@ -37,6 +37,7 @@ import {CreateNewClassroomModalComponent} from './modals/create-new-classroom-mo
 import {DeleteTopicFromClassroomModalComponent} from './modals/delete-topic-from-classroom-modal.component';
 import {EditableTopicBackendApiService} from 'domain/topic/editable-topic-backend-api.service';
 import {TopicsDependencyGraphModalComponent} from './modals/topic-dependency-graph-viz-modal.component';
+import {AddTopicToClassroomModalComponent} from './modals/add-topic-to-classroom-modal.component';
 import {
   ImageUploaderParameters,
   ImageUploaderData,
@@ -105,6 +106,8 @@ export class ClassroomAdminPageComponent implements OnInit {
   filteredTopicsToClassroomRelation: TopicClassroomRelationDict[] = [];
   allValidationErrors: string[] = [];
   saveClassroomValidationErrors: string[] = [];
+
+  addedTopicIds: string[] = [];
 
   thumbnailParameters: ImageUploaderParameters = {
     disabled: true,
@@ -371,6 +374,32 @@ export class ClassroomAdminPageComponent implements OnInit {
     } else {
       this.classroomDataIsChanged = false;
     }
+  }
+
+  openAddTopicModal(): void {
+    const modalRef: NgbModalRef = this.ngbModal.open(
+      AddTopicToClassroomModalComponent,
+      {
+        backdrop: 'static',
+      }
+    );
+
+    modalRef.componentInstance.selectedTopicIds = this.addedTopicIds;
+
+    modalRef.result
+      .then((selectedTopicIds: string[]) => {
+        selectedTopicIds.forEach(topicId => {
+          this.addTopicId(topicId);
+          if (!this.addedTopicIds.includes(topicId)) {
+            this.addedTopicIds.push(topicId);
+          }
+        });
+      })
+      .catch(() => {
+        // Note to developers:
+        // This callback is triggered when the Cancel button is clicked.
+        // No further action is needed.
+      });
   }
 
   convertClassroomDictToBackendForm(
@@ -739,6 +768,12 @@ export class ClassroomAdminPageComponent implements OnInit {
       classroom_name: null,
       classroom_url_fragment: null,
     });
+
+    const index = this.addedTopicIds.indexOf(topicIdToDelete);
+    if (index !== -1) {
+      this.addedTopicIds.splice(index, 1);
+    }
+
     let childTopicNodes = [];
     for (let topicName in this.topicNameToPrerequisiteTopicNames) {
       const prerequisites = this.topicNameToPrerequisiteTopicNames[topicName];

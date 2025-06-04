@@ -108,6 +108,16 @@ interface TopicIdToTopicNameBackendResponse {
   };
 }
 
+interface UnusedTopicsBackendDict {
+  unused_topics: {
+    [topicId: string]: TopicBackendDict;
+  };
+}
+
+export interface UnusedTopicsResponse {
+  [topicId: string]: TopicBackendDict;
+}
+
 export interface TopicIdToTopicNameResponse {
   [topicId: string]: string;
 }
@@ -346,6 +356,22 @@ export class EditableTopicBackendApiService {
   async fetchStoriesAsync(topicId: string): Promise<StorySummaryBackendDict[]> {
     return new Promise((resolve, reject) => {
       this._fetchStories(topicId, resolve, reject);
+    });
+  }
+
+  async getUnusedTopicsAsync(): Promise<UnusedTopicsResponse> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .get<UnusedTopicsBackendDict>('/unused_topics')
+        .toPromise()
+        .then(
+          response => {
+            resolve(response.unused_topics);
+          },
+          errorResponse => {
+            reject(errorResponse.error.error.error);
+          }
+        );
     });
   }
 
