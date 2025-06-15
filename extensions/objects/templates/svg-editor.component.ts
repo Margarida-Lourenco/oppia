@@ -649,12 +649,24 @@ export class SvgEditorComponent implements OnInit {
   }
 
   centerContent(): void {
-    let temporarySelection = new fabric.ActiveSelection(
+    const temporarySelection = new fabric.ActiveSelection(
       this.canvas.getObjects(),
       {canvas: this.canvas}
     );
-    temporarySelection.scaleToWidth(this.canvas.getWidth());
-    temporarySelection.center();
+
+    const bounds = temporarySelection.getBoundingRect();
+    const canvasWidth = this.canvas.getWidth();
+    const canvasHeight = this.canvas.getHeight();
+
+    if (bounds.width > canvasWidth || bounds.height > canvasHeight) {
+      const scale = Math.min(
+        canvasWidth / bounds.width,
+        canvasHeight / bounds.height
+      );
+      temporarySelection.scale(scale);
+      temporarySelection.center();
+    }
+
     this.canvas.setActiveObject(temporarySelection);
     this.canvas.discardActiveObject();
   }
